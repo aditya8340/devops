@@ -10,7 +10,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.source>11</maven.compiler.source> <!-- Set to your Java version -->
+        <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
     </properties>
 
@@ -20,32 +20,38 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.15.0</version> <!-- Use a stable version -->
+                <version>3.15.0</version>
                 <executions>
                     <execution>
                         <phase>verify</phase>
                         <goals>
-                            <goal>pmd</goal>
+                            <goal>check</goal> <!-- Runs and fails build if violations exist -->
+                            <goal>pmd</goal>   <!-- Generates pmd.xml -->
                         </goals>
                     </execution>
                 </executions>
                 <configuration>
                     <targetJdk>11</targetJdk>
                     <printFailingErrors>true</printFailingErrors>
-                    <failOnViolation>false</failOnViolation>
+                    <failOnViolation>false</failOnViolation> <!-- Don't fail build -->
                     <linkXRef>false</linkXRef>
                     <rulesets>
                         <ruleset>rulesets/java/basic.xml</ruleset>
                         <ruleset>rulesets/java/braces.xml</ruleset>
                         <ruleset>rulesets/java/unusedcode.xml</ruleset>
                     </rulesets>
+                    <!-- ✅ Ensure XML output is generated -->
+                    <outputDirectory>${project.build.directory}/pmd</outputDirectory>
+                    <outputFormat>xml</outputFormat>
+                    <reports>
+                        <report>pmd.xml</report>
+                    </reports>
                 </configuration>
             </plugin>
         </plugins>
     </build>
 
     <profiles>
-        <!-- Profile to trigger PMD via -P metrics -->
         <profile>
             <id>metrics</id>
             <build>
@@ -58,6 +64,5 @@
             </build>
         </profile>
     </profiles>
-
 </project>
 
