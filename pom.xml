@@ -1,45 +1,63 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-         http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-  <groupId>com.aditya</groupId>
-  <artifactId>code-review</artifactId>
-  <version>1.0-SNAPSHOT</version>
+    <modelVersion>4.0.0</modelVersion>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-pmd-plugin</artifactId>
-        <version>3.21.1</version>
-        <configuration>
-          <printFailingErrors>true</printFailingErrors>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+    <groupId>com.aditya</groupId>
+    <artifactId>devops-demo</artifactId>
+    <version>1.0-SNAPSHOT</version>
 
-  <profiles>
-    <profile>
-      <id>metrics</id>
-      <build>
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source> <!-- Set to your Java version -->
+        <maven.compiler.target>11</maven.compiler.target>
+    </properties>
+
+    <build>
         <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-pmd-plugin</artifactId>
-            <version>3.21.1</version>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>pmd</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
+            <!-- PMD Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.15.0</version> <!-- Use a stable version -->
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>pmd</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <targetJdk>11</targetJdk>
+                    <printFailingErrors>true</printFailingErrors>
+                    <failOnViolation>false</failOnViolation>
+                    <linkXRef>false</linkXRef>
+                    <rulesets>
+                        <ruleset>rulesets/java/basic.xml</ruleset>
+                        <ruleset>rulesets/java/braces.xml</ruleset>
+                        <ruleset>rulesets/java/unusedcode.xml</ruleset>
+                    </rulesets>
+                </configuration>
+            </plugin>
         </plugins>
-      </build>
-    </profile>
-  </profiles>
+    </build>
+
+    <profiles>
+        <!-- Profile to trigger PMD via -P metrics -->
+        <profile>
+            <id>metrics</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-pmd-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
 </project>
+
